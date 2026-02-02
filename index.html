@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Will you be my Valentine Akruti? 💖</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    h1 {
+      font-size: 3.8rem;
+      color: #fff;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      animation: heartbeat 2s infinite;
+    }
+
+    .buttons {
+      position: relative;
+      display: flex;
+      gap: 5rem;
+      margin-top: 3rem;
+    }
+
+    button {
+      font-size: 2.1rem;
+      padding: 1.1rem 3.8rem;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.15s;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    #yes {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    #yes:hover {
+      background: #ff1a47;
+      transform: scale(1.12);
+    }
+
+    #no {
+      background: #555;
+      color: white;
+      position: absolute;
+      left: 0;
+      user-select: none;
+    }
+
+    #no:hover {
+      background: #777;
+    }
+
+    #success {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255,105,180,0.92);
+      color: white;
+      font-size: 4.5rem;
+      font-weight: bold;
+      text-align: center;
+      padding-top: 30vh;
+      text-shadow: 0 6px 20px #0008;
+      z-index: 999;
+    }
+
+    @keyframes heartbeat {
+      0%,100% { transform: scale(1); }
+      50%     { transform: scale(1.08); }
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 2.5rem;
+      animation: float 6s infinite;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(120vh) rotate(0deg); }
+      100% { transform: translateY(-20vh) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Will you be my Valentine? 💕</h1>
+
+  <div class="buttons">
+    <button id="yes">Yes 🥰</button>
+    <button id="no">No 😢</button>
+  </div>
+
+  <div id="success">
+    It's a prank you dummyyy 😭😂<br>
+    <span style="font-size:0.6em; margin-top:1.5rem; display:block;">
+      Happy Valentine's anyway loser 💖
+    </span>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('no');
+    const yesBtn = document.getElementById('yes');
+    const success = document.getElementById('success');
+
+    // Make "No" run away very fast when cursor gets close
+    document.addEventListener('mousemove', (e) => {
+      const rect = noBtn.getBoundingClientRect();
+      const btnCenterX = rect.left + rect.width/2;
+      const btnCenterY = rect.top + rect.height/2;
+
+      const distX = e.clientX - btnCenterX;
+      const distY = e.clientY - btnCenterY;
+      const distance = Math.sqrt(distX**2 + distY**2);
+
+      // If mouse is closer than ~120px → teleport fast
+      if (distance < 120) {
+        // Random position — but keep it inside viewport
+        const maxX = window.innerWidth - rect.width - 40;
+        const maxY = window.innerHeight - rect.height - 40;
+
+        const newX = Math.random() * maxX;
+        const newY = Math.random() * maxY;
+
+        noBtn.style.left = newX + 'px';
+        noBtn.style.top  = newY + 'px';
+        noBtn.style.position = 'fixed';
+      }
+    });
+
+    // Yes → show the prank message
+    yesBtn.addEventListener('click', () => {
+      success.style.display = 'block';
+      // Optional: hide buttons
+      document.querySelector('.buttons').style.display = 'none';
+    });
+
+    // Bonus: occasional hearts floating up
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = ['💖','💕','❤️','💗','💞'][Math.floor(Math.random()*5)];
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (4 + Math.random() * 5) + 's';
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 8000);
+    }
+
+    setInterval(createHeart, 600);
+  </script>
+
+</body>
+</html>
